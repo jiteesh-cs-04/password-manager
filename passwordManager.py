@@ -1,14 +1,17 @@
+import storagemanager as sm
 class PasswordManager:
     def __init__(self,data):
         self.data=data
     def add_account(self,website,account):
         if website not in self.data:
             self.data[website] = []
+            sm.write_database(self.data)
         for i in self.data[website]:
             if account['username']==i['username']:
                  return False,"USERNAME_ALREADY_EXISTS"
         else:
             self.data[website].append(account)
+            sm.write_database(self.data)
             return True,"SUCCESS"
     def search_account(self,website,username):
         if website in self.data:
@@ -25,6 +28,7 @@ class PasswordManager:
                 self.data[website].remove(account)
                 if self.data[website]==[]:
                     del self.data[website]
+                sm.write_database(self.data)
                 return True,"SUCCESS"
             else:
                 return False,"ACCOUNT_NOT_FOUND"
@@ -46,19 +50,12 @@ class PasswordManager:
     def add_website(self,website):
         website = website.strip().lower()
         self.data[website]=[]
+        sm.write_database(self.data)
     def del_website(self,website):
         website = website.strip().lower()
         del self.data[website]
-    def get_websites():
-        L=[]
-        for i in self.data:
-            L+=[i]
-        return L
-    def get_accounts(website):
-        L=[]
-        for i in self.data[website]:
-            L+=[i]
-        return L
+        sm.write_database(self.data)
+    
             
             
         
